@@ -50,7 +50,15 @@ export default function Navbar() {
             // Reserve the space so the bar doesn't jump once auth resolves.
             <div aria-hidden="true" className="h-9 w-9" />
           ) : user ? (
-            <ProfileMenu />
+            <div className="flex items-center gap-3">
+              <Link
+                href="/dashboard"
+                className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700"
+              >
+                Get started
+              </Link>
+              <ProfileMenu />
+            </div>
           ) : (
             <Link
               href="/auth"
@@ -65,7 +73,11 @@ export default function Navbar() {
   );
 }
 
-function ProfileMenu() {
+export function ProfileMenu({
+  showDashboardLink = true,
+}: {
+  showDashboardLink?: boolean;
+}) {
   const { user, signOut } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -141,6 +153,16 @@ function ProfileMenu() {
             <p className="truncate text-xs text-gray-500">{email}</p>
           </div>
           <div className="border-t border-gray-200/70 pt-2">
+            {showDashboardLink && (
+              <Link
+                href="/dashboard"
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="block w-full rounded-lg px-2 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
+              >
+                대시보드
+              </Link>
+            )}
             <button
               type="button"
               role="menuitem"

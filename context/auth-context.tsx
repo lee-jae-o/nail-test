@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [supabase]);
 
   const signInWithGoogle = useCallback(
-    async (next = "/") => {
+    async (next = "/dashboard") => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {

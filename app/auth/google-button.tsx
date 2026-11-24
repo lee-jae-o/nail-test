@@ -43,7 +43,7 @@ export default function GoogleButton() {
 
   // Already signed in → no reason to stay on the sign-in page.
   useEffect(() => {
-    if (!loading && user) router.replace("/");
+    if (!loading && user) router.replace("/dashboard");
   }, [loading, user, router]);
 
   async function handleClick() {

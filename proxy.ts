@@ -28,7 +28,21 @@ export async function proxy(request: NextRequest) {
   );
 
   // Validates the JWT with the Auth server and refreshes it if needed.
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Signed-out users can't see the dashboard.
+  const { pathname } = request.nextUrl;
+  if (!user && (pathname === "/dashboard" || pathname.startsWith("/dashboard/"))) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth";
+    url.search = "";
+    const redirect = NextResponse.redirect(url);
+    // Carry over any refreshed/cleared auth cookies.
+    response.cookies.getAll().forEach((c) => redirect.cookies.set(c));
+    return redirect;
+  }
 
   return response;
 }
